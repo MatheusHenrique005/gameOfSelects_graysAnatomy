@@ -21,7 +21,8 @@ select*from atores;
 CREATE TABLE personagens (
 idPersonagem INT,
 fkAtor INT,
-morreu VARCHAR (45),
+morreu CHAR (1),
+CONSTRAINt chkMorreu CHECK (morreu IN('S', 'N')),
 nome VARCHAR (45),
 descricao VARCHAR (45),
 papel VARCHAR (45),
@@ -30,11 +31,11 @@ constraint pkPersonagemAtor PRIMARY KEY (idPersonagem, fkAtor)
 );
 
 INSERT INTO personagens VALUES
-('1','1','não morreu','Meredith Grey','Principal','Interna'),
-('2','2','não morreu','Miranda Bailey','Principal','Enfermeira'),
-('3','3','não morreu','Derek Shepherd','Principal','Medico'),
-('4','4','não morreu','Cristina Yang','Principal','Interna'),
-('5','5','não morreu','Alex Karev','Principal','Interno');
+('1','1','N','Meredith Grey','Principal','Interna'),
+('2','2','N','Miranda Bailey','Principal','Enfermeira'),
+('3','3','N','Derek Shepherd','Principal','Medico'),
+('4','4','N','Cristina Yang','Principal','Interna'),
+('5','5','N','Alex Karev','Principal','Interno');
 
 select*from personagens;
 
