@@ -159,7 +159,12 @@ FROM personagens
     JOIN atores ON idAtor = fkAtor
 WHERE atores.nome LIKE 'S%';
 
--- Mostre 
+-- Mostre os nomes dos personagens que morreram que aparecem na temporada 3
+
+SELECT personagens.nome
+FROM personagens
+	JOIN aparicao ON idPersonagem = fkPersonagem
+WHERE personagens.morreu = 'S' AND fkTemporada = 3;
 
 -- Difíceis (5):
 
@@ -174,65 +179,53 @@ GROUP BY atores.nome
 ORDER BY num_personagens DESC;
 
 
--- 27. Selecione o nome dos personagens e a média das pontuações associadas a cada personagem, apenas para personagens cuja média das pontuações seja maior que 8.
+-- 27. Selecione o nome dos personagens e a média das pontuações associadas a cada personagem.
 SELECT p.nome,
     AVG(a.pontuacao) AS media_pontuacao
 FROM personagens p
     LEFT JOIN avaliacao a ON p.idPersonagem = a.fkPersonagem
-GROUP BY p.nome
-HAVING media_pontuacao > 8;
+GROUP BY p.nome;
 
 
--- 28. Selecione o nome dos personagens e a contagem de aparições em cada temporada, apenas para personagens que apareceram em todas as temporadas.
+-- 28. Selecione o nome dos personagens e a contagem de aparições em cada temporada.
 SELECT p.nome,
     COUNT(a.fkTemporada) AS num_aparicoes
 FROM personagens p
     LEFT JOIN aparicao a ON p.idPersonagem = a.fkPersonagem
-GROUP BY p.nome
-HAVING num_aparicoes = (
-        SELECT COUNT(DISTINCT idTemporada)
-        FROM temporada
-    );
+GROUP BY p.nome;
 
 
--- 29. Selecione o nome dos personagens e o mínimo ID dos atores associados a cada personagem, apenas para personagens cujo mínimo ID dos atores seja menor que 5.
+-- 29. Selecione o nome dos personagens e o mínimo ID dos atores associados a cada personagem.
 SELECT p.nome,
     MIN(a.idAtor) AS min_id_ator
 FROM personagens p
     LEFT JOIN atores a ON p.fkAtor = a.idAtor
-GROUP BY p.nome
-HAVING min_id_ator < 5;
+GROUP BY p.nome;
 
 
--- 30. Selecione o nome dos personagens e a soma dos IDs dos atores associados a cada personagem, apenas para personagens cuja soma dos IDs dos atores seja menor que 20.
+-- 30. Selecione o nome dos personagens e a soma dos IDs dos atores associados a cada personagem.
 SELECT p.nome,
     SUM(a.idAtor) AS soma_ids_atores
 FROM personagens p
     LEFT JOIN atores a ON p.fkAtor = a.idAtor
-GROUP BY p.nome
-HAVING soma_ids_atores < 20;
+GROUP BY p.nome;
 
 
 -- Desafiadores (2):
 
 
--- 31. Selecione o nome dos atores juntamente com o número de personagens associados a cada ator, apenas para atores que têm pelo menos um personagem associado. Ordene em ordem decrescente pelo número de personagens.
+-- 31. Selecione o nome dos atores juntamente com o número de personagens associados a cada ator. Ordene em ordem decrescente pelo número de personagens.
 SELECT a.nome,
     COUNT(p.idPersonagem) AS num_personagens
 FROM atores a
     LEFT JOIN personagens p ON a.idAtor = p.fkAtor
 GROUP BY a.nome
-HAVING num_personagens >= 1
 ORDER BY num_personagens DESC;
 
 
--- 32. Selecione o nome dos personagens e a média das pontuações associadas a cada personagem, apenas para personagens cuja média das pontuações seja maior que a média geral das pontuações.
+-- 32. Selecione o nome dos personagens e a média das pontuações associadas a cada personagem.
 SELECT p.nome,
     AVG(a.pontuacao) AS media_pontuacao
 FROM personagens p
     LEFT JOIN avaliacao a ON p.idPersonagem = a.fkPersonagem
-GROUP BY p.nome
-HAVING media_pontuacao > (
-        SELECT AVG(pontuacao)
-        FROM avaliacao
-    );
+GROUP BY p.nome;
